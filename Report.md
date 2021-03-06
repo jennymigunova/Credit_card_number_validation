@@ -1,31 +1,82 @@
-Отчёт о тестировании <Credit Card Number Validator>
-Краткое описание
-<01.03.2021> - <03.03.2021> было проведено <функциональное тестирование> приложения <Credit Card Number Validator>.
+## Отчёт о тестировании Credit Card Number Validator
 
-На тестирование затрачено: <1 час>
+### Краткое описание
+01.03.2021 - 03.03.2021 было проведено функциональное тестирование приложения Credit Card Number Validator.
 
-В результате тестирования выявлены следующие дефекты:
+На тестирование затрачено: 1 час
 
-<https://github.com/jennymigunova/Credit_card_number_validation/issues/2>
-<https://github.com/jennymigunova/Credit_card_number_validation/issues/1>
+### В результате тестирования выявлены следующие дефекты:
 
-Описание процесса тестирования
-В процессе тестирования использовались следующие артефакты*:
+[При вводе валидных значений карты программа показывает, что карта невалидна](https://github.com/jennymigunova/Credit_card_number_validation/issues/2)
 
-<Установить IntelliJ IDEA согласно Руководство по установке IntelliJ IDEA>
-<Проверить работу этой программы (нужно заменить код с "Hello programming!" целиком на тот, что приведён выше) и запускать программу с разными тестовыми данными (запуск описан в п. "Шаг 20" Руководства по установке IntelliJ IDEA)>
+### Описание процесса тестирования
+В процессе тестирования использовались следующие артефакты:
 
-В качестве тестовых данных использовались данные <freeformatter.com>:
+- [Руководство по установке IntelliJ IDEA](https://github.com/netology-code/javaqa-homeworks/blob/master/intro/idea.md)
+```java 
+  public class Main {
+  public static void main(String[] args) {
+    // TODO: подставлять номер карты нужно сюда между двойными кавычками, без пробелов
+    String number = "5351719427810741";
+    System.out.println(String.format("Result is %s", isValidCardNumber(number) ? "OK" : "FAIL"));
+  }
 
-<Валидные номера карт: 4539337912393368
-4556612052945500
-4556670469770370008>
-<Валидные номера карт: 345038729551741
-348745497840059
-341140472588633>
+  public static boolean isValidCardNumber(String number) {
+    if (number == null) {
+      return false;
+    }
 
-Тестирование производилось в следующем окружении:
+    if (number.length() != 16) {
+      return false;
+    }
 
-<MacOS Version 11.1 , 32 bit>
-<Java 11>
-<IntelliJ IDEA 2020.3>
+    long result = 0;
+    for (int i = 0; i < number.length(); i++) {
+      int digit;
+      try {
+        digit = Integer.parseInt(number.charAt(i) + "");
+      } catch (NumberFormatException e) {
+        return false;
+      }
+
+      if (i % 2 == 0) {
+        digit *= 2;
+        if (digit > 9) {
+          digit -= 9;
+        }
+      }
+      result += digit;
+    }
+
+    return (result != 0) && (result % 10 == 0);
+  }
+}
+```
+### В качестве тестовых данных использовались данные [freeformatter.com](freeformatter.com):
+
+1. VISA:
+- 4485536442542964
+- 4485173528369920
+- 4114295960215203617
+2. MasterCard:
+- 2221006703746889
+- 2221003951320269
+- 5458745083157541
+3. American Express (AMEX):
+- 371460155374520
+- 347365156202896
+- 340650818184096
+4.Discover:
+- 6011347979536843
+- 6011065034900313
+- 6011243814507469023
+5. JCB:
+- 3540911987913794
+- 3589558450897491
+- 3534507562263632012
+
+### Тестирование производилось в следующем окружении:
+
+MacOS Version 11.1 , 32 bit
+Java 11
+IntelliJ IDEA 2020.3
